@@ -1,0 +1,9 @@
+numpy
+pandas
+requests
+matplotlib
+statsmodels
+geemap
+gdal
+OSMPythonTools
+ee

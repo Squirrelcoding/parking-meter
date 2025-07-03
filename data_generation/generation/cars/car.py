@@ -7,9 +7,10 @@ class Car:
         self.rear_windshield = None
         self.color = None
         self.random_noise = []
-        pass
     def set_dimensions(self, dimensions: Tuple[float, float]):
         self.dimensions = dimensions
+    def set_color(self, color):
+        pass
     def add_noise(self, noise):
         pass
     def build(self):
