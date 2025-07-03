@@ -2,37 +2,15 @@ const WIDTH = 400;
 const HEIGHT = 400;
 const NUM_CARS = 10;
 
-let cars = [];
 
-function preload() {
-  for (let i = 0; i < NUM_CARS; i++) {
-    let randomIndex = Math.floor(Math.random() * 41);
-    cars.push(loadImage(`../data/cars/car${randomIndex}.png`));
-  }
-}
-
-function setup() {
+function setup() {  
   createCanvas(WIDTH, HEIGHT);
-  background(getRandomColor());
+  // background(getRandomColor());
   angleMode("radians");
 }
 
 function draw() {
-  //when mouse button is pressed, circles turn black
-  console.log(cars.length);
-  for (const car of cars) {
-    let x = Math.floor(Math.random() * WIDTH);
-    let y = Math.floor(Math.random() * HEIGHT);
-    let theta = Math.floor(Math.random() * 2 * PI);
-    tint('red');
-    push();
-    translate(x, y); // move to center of rectangle
-    rotate(theta); // rotate around that point
-    imageMode(CENTER);
-    image(car, 0, 0); // draw image
-    pop();
-  }
-  noLoop();
+  rect(30, 20, 55, 100, 20);
 }
 
 const colors = [
@@ -67,7 +45,27 @@ const colors = [
   [189, 186, 174],
 ];
 
-function getRandomColor() {
+function getSize() {
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  return color;
+}
+
+function getHoodSize() {
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  return color;
+}
+
+function getRooftopWindowSize() {
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  return color;
+}
+
+function getRandomLines() {
+  const color = colors[Math.floor(Math.random() * colors.length)];
+  return color;
+}
+
+function getColor() {
   const color = colors[Math.floor(Math.random() * colors.length)];
   return color;
 }
