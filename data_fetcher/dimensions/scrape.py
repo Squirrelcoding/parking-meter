@@ -11,8 +11,8 @@ pattern = re.compile(r"^https://www\.carsized\.com/en/cars/")
 
 car_links = []
 for a_tag in soup.find_all("a", href=True):
-    href = a_tag['href']
-    if pattern.match(href):
+    href = a_tag['href'] # type: ignore
+    if pattern.match(href): # type: ignore
         car_links.append(href)
 
 size_pattern = re.compile(
