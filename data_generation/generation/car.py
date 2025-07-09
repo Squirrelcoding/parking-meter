@@ -61,12 +61,79 @@ class CarGenerator:
         self.effects = {
             "shine": None,
             "roof_squares": [],
-            "roof_lines": [],
             "transparency": 1.0,
             "clutter_pixels": [],
-            "saturation": 0,
-            "shadow": None
+            "shadow": None,
+            "blur": 0
         }
+        
+    def add_shine(self):
+        x_coordinate = random.uniform(0, self.dimensions[0])
+        y_coordinate = random.uniform(0, self.dimensions[1])
+
+        radius = random.uniform(0, self.dimensions[0] / 2)
+
+        blur_level = random.uniform(3, 5)
+        self.effects["shine"] = {
+            "x": x_coordinate,
+            "y": y_coordinate,
+            "radius": radius,
+            "level": blur_level
+        }
+
+    def add_rectangle(self):
+        width = random.uniform(0, self.dimensions[0])
+        height = random.uniform(0, self.dimensions[1])
+        x_coordinate = random.uniform(0, self.dimensions[0])
+        y_coordinate = random.uniform(0, self.dimensions[1])
+        color = None
+        rotation = 0
+        self.effects["roof_squares"].append({
+            width, height, x_coordinate, y_coordinate, color, rotation
+        })
+        
+    def set_transparency(self):
+        self.effects["transparency"] = random.uniform(0, 12)
+         
+    def copy_region(self):
+        """
+        Randomly selects a rectangular region of the car, creates a copy, and shifts the copy to mimic satellite imaging errors.
+        """
+        x_coordinate = random.uniform(0, self.dimensions[0])
+        y_coordinate = random.uniform(0, self.dimensions[1])
+
+        radius = random.uniform(0, self.dimensions[0] / 2)
+
+        blur_level = random.uniform(3, 5)
+        self.effects["shine"] = {
+            "x": x_coordinate,
+            "y": y_coordinate,
+            "radius": radius,
+            "level": blur_level
+        }
+        
+    def pixelate_region(self):
+        """
+        Randomly selects a rectangular region of the car and pixelates it.
+        """
+        x_coordinate = random.uniform(0, self.dimensions[0])
+        y_coordinate = random.uniform(0, self.dimensions[1])
+
+        radius = random.uniform(0, self.dimensions[0] / 2)
+
+        blur_level = random.uniform(3, 5)
+        self.effects["shine"] = {
+            "x": x_coordinate,
+            "y": y_coordinate,
+            "radius": radius,
+            "level": blur_level
+        }      
+        
+    def add_static_noise(self):
+        """
+        Adds static noise to the car.
+        """
+        pass 
 
     def build(self):
         return {
