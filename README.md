@@ -6,13 +6,7 @@ The project will synthetically generate data using statistics and p5.js and use 
 
 ## Data collection
 
-The data to be used to train the model to identify cars in a satellite image of a parking lot is synthetically generated due to the scarcity existing datasets. Labelling up to hundreds of cars in a single training image is extremely tedious. Furthermore, parking lots come in many shapes and sizes, meaning that thousands of cars would have to be labelled by hand in a reasonable amount of time - which is not possible. 
-
-Because of this, we are instead choosing to synthetically generate satellite images of parking lots using Python and p5.js.
-
-## Synthetic data generation of cars
-
-Vehicles can widely vary in terms of their dimensions, colors, features, materials, etc. In order to synthetically generate cars such that the model can still generalize with accuracy, it is vital to use real-world data to generate new cars with heavy variation.
+The CarPK dataset is a dataset of over 1500 images of cars with bounding boxes in parking lots. We will preprocess and augment the dataset to ensure that it works best for our cars.
 
 ### Dimension generation
 
@@ -22,22 +16,7 @@ Under `data_generation/data_collection/dimensions` we have two Python files that
 
 ## Progress
 
-- [ ] Synthetic data generation (SGD)
-    - [ ] SDG for Cars
-        - [X] Collect data for dimensions and create a multivariate normal distribution to sample from.
-        - [ ] Collect data for colors and create a uniform distribution to sample from.
-        - [ ] Use a distribution of the types of cars (SUV, pickup, van, etc.) and create a uniform distribution to sample from.
-        - [ ] Determine a way to accurately generate the placement, size, and orientation of smaller features of the cars such as the windshields, mirrors, and windows.
-            - [ ] Windshields
-            - [ ] Mirrors
-            - [ ] Windows 
-        - [ ] Implement a variety of "random noise" to add to the car AFTER all of the basic features have been added.
-            - [ ] Random squares
-            - [ ] Random lines
-            - [ ] Reflections
-            - [ ] Slight transparency
-            - [ ] Shadows
-            - [ ] Saturation
+- [ ] Data collection
 - [ ] Model development
     - TO BE ADDED.
 - [ ] Inference

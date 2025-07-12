@@ -134,6 +134,12 @@ class CarGenerator:
         Adds static noise to the car.
         """
         pass 
+    
+    def add_shadow(self):
+        """
+        Adds a shadow to the car.
+        """
+        pass 
 
     def build(self):
         return {
