@@ -1,6 +1,8 @@
 import torch.nn as nn
 from torchvision import models
 
+VGG_MODEL = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512]
+
 class CSRNet(nn.Module):
     def __init__(self, load_weights=False):
         # Found on page 5 of the paper
@@ -9,7 +11,7 @@ class CSRNet(nn.Module):
         self.seen = 0
 
         # Features for frontend (VGG-16) and backend. M stands for a max-pooling layer.
-        self.frontend_feat = [64, 64, 'M', 128, 128, 'M', 256, 256, 256, 'M', 512, 512, 512]
+        self.frontend_feat = VGG_MODEL
         self.backend_feat = [512, 512, 512, 256, 128, 64]
 
         # Make the layers
