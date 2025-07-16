@@ -27,12 +27,8 @@ class listDataset(Dataset):
         img_path = self.lines[index]
 
         img, target = load_data(img_path, self.train)
-
-        # img = 255.0 * F.to_tensor(img)
-
-        # img[0,:,:]=img[0,:,:]-92.8207477031
-        # img[1,:,:]=img[1,:,:]-95.2757037428
-        # img[2,:,:]=img[2,:,:]-104.877445883
+    
+        # Code manipulating the image went here
 
         if self.transform is not None:
             img = self.transform(img)
