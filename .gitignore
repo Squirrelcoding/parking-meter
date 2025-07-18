@@ -1,4 +1,5 @@
 env/
+.venv/
 synthetic_parking_lots/
 images/
 node_modules/
