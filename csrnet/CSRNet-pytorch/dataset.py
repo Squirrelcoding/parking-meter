@@ -2,7 +2,7 @@ import random
 from torch.utils.data import Dataset
 from image import *
 
-class listDataset(Dataset):
+class ListDataset(Dataset):
     def __init__(self, root, shape=None, shuffle=True, transform=None,  train=False, seen=0, batch_size=1, num_workers=4):
         if train:
             root = root * 4

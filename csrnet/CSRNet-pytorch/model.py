@@ -20,12 +20,15 @@ class CSRNet(nn.Module):
 
         self.output_layer = nn.Conv2d(64, 1, kernel_size=1)
 
-        # Load in the default weights for the model using the default vgg16 weights
         if not load_weights:
             mod = models.vgg16(pretrained=True)
             self._initialize_weights()
-            for i in range(len(self.frontend.state_dict().items())):
-                self.frontend.state_dict().items()[i][1].data[:] = mod.state_dict().items()[i][1].data[:]
+            mod_state_items = list(mod.state_dict().items())
+            frontend_state_items = list(self.frontend.state_dict().items())
+
+            for i in range(len(frontend_state_items)):
+                frontend_state_items[i][1].data[:] = mod_state_items[i][1].data[:]
+
 
     def forward(self, x):
         x = self.frontend(x)
