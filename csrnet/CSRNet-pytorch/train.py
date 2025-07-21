@@ -1,5 +1,3 @@
-
-
 import os
 
 from model import CSRNet
@@ -13,7 +11,6 @@ import argparse
 import json
 import dataset
 import time
-
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -175,9 +172,6 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
-
-
-
 best_prec1 = 1e6
 
 args = parser.parse_args()
@@ -198,8 +192,6 @@ with open(args.train_json, "r") as outfile:
 with open(args.test_json, "r") as outfile:
     val_list = json.load(outfile)
 
-
-
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 torch.cuda.manual_seed(args.seed)
 
@@ -212,8 +204,6 @@ criterion = nn.MSELoss(size_average=False).to(device)
 optimizer = torch.optim.SGD(
     model.parameters(), args.lr, momentum=args.momentum, weight_decay=args.decay
 )
-
-
 
 if args.pre:
     if os.path.isfile(args.pre):
