@@ -48,7 +48,7 @@ class CSRNet(nn.Module):
 
 def make_layers(cfg, in_channels=3, batch_norm=False, dilation=False):
     if dilation:
-        d_rate = 2
+        d_rate = 2 
     else:
         d_rate = 1
     layers = []
