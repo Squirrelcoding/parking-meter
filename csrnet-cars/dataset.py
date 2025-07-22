@@ -1,40 +1,24 @@
-import random
+import os
+import glob
+import json
 
-import torchvision.datasets as dset
-from torchvision.transforms import v2
-from torchvision.transforms import PILToTensor, ToPILImage
-from PIL import Image
-import torch
+from torch.utils.data import Dataset
 
-H, W = 416, 416
 
-def gauss_noise_tensor(img):
-    assert isinstance(img, torch.Tensor)
-    dtype = img.dtype
-    if not img.is_floating_point():
-        img = img.to(torch.float32)
-    
-    sigma = 25.0
-    
-    out = img + sigma * torch.randn_like(img)
-    
-    if out.dtype != dtype:
-        out = out.to(dtype)
-        
-    return out
+class CarDataset(Dataset):
+    def __init__(self, root_dir: str, annotation_file: str, transform=None):
+        self.root_dir = root_dir
 
-transforms = v2.Compose([
-    PILToTensor(),
-    gauss_noise_tensor,
-    ToPILImage(),
-    v2.RandomResize(150, 250),
-    v2.RandomRotation(degrees=(0,180)),
-    v2.ColorJitter(brightness=0.3),
-    # v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+        with open(os.path.join(root_dir, annotation_file), "r") as f:
+            data = json.dump(f)
+            self.paths = [os.path.join(root_dir, image["file_name"]) for image in data]
 
-dataset = dset.CocoDetection("CARPK-1/train", annFile="CARPK-1/train/coco_annotations.json", transform=transforms)
+        self.n_samples = len(self.paths)
 
-img, target = random.choice(dataset)
-print(img)
-img.save("output.jpg")
+    def __len__(self):
+        return self.n_samples
+
+    def __getitem__(self, index):
+        assert index <= len(self)
+
+        pass

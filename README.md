@@ -16,8 +16,4 @@ Under `data_generation/data_collection/dimensions` we have two Python files that
 
 ## Progress
 
-- [ ] Data collection
-- [ ] Model development
-    - TO BE ADDED.
-- [ ] Inference
-    - TO BE ADDED.
+- [ ] The current plan for right now is to transform the CARPK and COWC datasets and suit them for training the CSRNet model. This includes applying transformations and more importantly converting them into a head-annotation format suitable for density detection.

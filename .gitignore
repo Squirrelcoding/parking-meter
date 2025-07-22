@@ -1,7 +1,6 @@
 env/
 .venv/
-synthetic_parking_lots/
-images/
-node_modules/
-data_generation/data/index.html
 CARPK-1/
+COWC-1
+
+.env.local
