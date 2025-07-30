@@ -41,5 +41,3 @@ dataset = dset.CocoDetection(dataset_path, annFile=annotation_file, transform=tr
 print(len(dataset))
 
 img, target = random.choice(dataset)
-print(img)
-img.save("output.jpg")
