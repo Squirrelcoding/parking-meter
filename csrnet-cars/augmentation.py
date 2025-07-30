@@ -5,8 +5,14 @@ from torchvision.transforms import v2
 from torchvision.transforms import PILToTensor, ToPILImage
 from PIL import Image
 import torch
+import pathlib
 
-H, W = 416, 416
+# H, W = 416, 416
+
+
+dataset_path = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/dataset"
+annotation_file = dataset_path / "annotations.json"
+
 
 def gauss_noise_tensor(img):
     assert isinstance(img, torch.Tensor)
@@ -31,7 +37,8 @@ transforms = v2.Compose([
     v2.ColorJitter(brightness=0.3),
 ])
 
-dataset = dset.CocoDetection("CARPK-1/train", annFile="CARPK-1/train/coco_annotations.json", transform=transforms)
+dataset = dset.CocoDetection(dataset_path, annFile=annotation_file, transform=transforms)
+print(len(dataset))
 
 img, target = random.choice(dataset)
 print(img)
