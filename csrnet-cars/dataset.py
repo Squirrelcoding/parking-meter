@@ -3,52 +3,16 @@ import json
 import pathlib
 import random
 from PIL import Image
-import numpy
 
 import torch
 from torchvision.transforms import v2, functional as F
-from torchvision.transforms import ToPILImage
 from torchvision.transforms.v2 import ToImage, ToDtype
-
 
 from torch.utils.data import Dataset
 
 import torch
 from torchvision.transforms import functional as F
 from PIL import Image
-import math
-
-def rotate_image_and_keypoints(img: Image.Image, keypoints: torch.Tensor, angle: float):
-    w, h = img.size
-    center = torch.tensor([w / 2, h / 2])
-
-    # Rotate image without expanding
-    rotated_img = F.rotate(img, angle, expand=False)
-
-    # If no keypoints, return early
-    if keypoints.numel() == 0:
-        return rotated_img, keypoints.clone()
-
-    # Rotation matrix
-    theta = math.radians(angle)
-    rot_matrix = torch.tensor([
-        [math.cos(theta), -math.sin(theta)],
-        [math.sin(theta),  math.cos(theta)]
-    ])
-
-    # Rotate keypoints
-    shifted = keypoints - center
-    rotated = shifted @ rot_matrix.T
-    rotated_keypoints = rotated + center
-
-    # Filter out-of-bounds keypoints
-    x, y = rotated_keypoints[:, 0], rotated_keypoints[:, 1]
-    in_bounds = (x >= 0) & (x < w) & (y >= 0) & (y < h)
-    filtered_keypoints = rotated_keypoints[in_bounds]
-
-    return rotated_img, filtered_keypoints
-
-
 
 import random
 from torchvision.transforms import functional as F
@@ -57,19 +21,12 @@ from PIL import Image
 def random_crop_with_keypoints(img: Image.Image, keypoints: torch.Tensor, scale_range=(0.3, 0.8)):
     """
     Randomly crops a chunk of the image and adjusts keypoints.
-
-    Args:
-        img (PIL.Image): Original image.
-        keypoints (Tensor): Tensor of shape (N, 2) containing [x, y] keypoints.
-        scale_range (tuple): (min_scale, max_scale) for crop size relative to original image.
-
-    Returns:
-        cropped_img (PIL.Image): Cropped image.
-        cropped_keypoints (Tensor): Keypoints adjusted to the new crop. Only includes those inside the crop.
     """
+    if keypoints.shape == torch.Size([0]):
+        return img, keypoints
+
     w, h = img.size
 
-    # Choose random scale for crop
     scale_w = random.uniform(*scale_range)
     scale_h = random.uniform(*scale_range)
     crop_w = int(w * scale_w)
@@ -77,7 +34,7 @@ def random_crop_with_keypoints(img: Image.Image, keypoints: torch.Tensor, scale_
 
     # Ensure crop fits inside image
     if crop_w >= w or crop_h >= h:
-        return img, keypoints  # no crop
+        return img, keypoints
 
     # Random top-left corner
     max_x = w - crop_w
@@ -85,8 +42,8 @@ def random_crop_with_keypoints(img: Image.Image, keypoints: torch.Tensor, scale_
     crop_x = random.randint(0, max_x)
     crop_y = random.randint(0, max_y)
 
-    # Crop the image
     cropped_img = F.crop(img, top=crop_y, left=crop_x, height=crop_h, width=crop_w)
+
 
     # Filter and adjust keypoints
     kp_x = keypoints[:, 0]
@@ -105,9 +62,7 @@ def random_crop_with_keypoints(img: Image.Image, keypoints: torch.Tensor, scale_
 
     return cropped_img, shifted_kps
 
-
-
-class CarDataset(Dataset):
+class RawCarDataset(Dataset):
     def __init__(self, root_dir: str, annotation_file: str, transform=None, target_transform=None):
         self.root_dir = root_dir
         self.paths = []
@@ -130,15 +85,10 @@ class CarDataset(Dataset):
         return self.n_samples
 
     def __getitem__(self, index):
-        assert index < len(self)
+        # assert index < len(self)
         path = self.paths[index]
         img = Image.open(path).convert("RGB")
         keypoints = torch.tensor([[x, y] for (x, y) in self.targets[index]], dtype=torch.float)
-
-        # Rotate the image and the keypoints
-        theta = random.random() * 360
-        img, keypoints = rotate_image_and_keypoints(img, keypoints, theta)
-        img, keypoints = random_crop_with_keypoints(img, keypoints, scale_range=(0.3, 0.5))
 
         return img, keypoints
 
@@ -155,21 +105,31 @@ target_transform = v2.Compose([
     v2.RandomResize(125, 175),  # Apply the same resizing to the target
 ])
 
-
 dataset_path = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/dataset"
 annotation_file = dataset_path / "annotations.json"
 
 
-dataset = CarDataset(dataset_path, annotation_file, transform=transforms)
+dataset = RawCarDataset(dataset_path, annotation_file, transform=transforms)
+
+new_targets = []
+
+j = 0
 
 
-img, target = random.choice(dataset)
-
-from PIL import ImageDraw
-
-draw = ImageDraw.Draw(img)
-
-for x, y in target:
-    draw.ellipse((x-2, y-2, x+2, y+2), fill="red")
-
-img.save("debug_keypoints.png")
+for img, target in dataset:
+    for i in range(20):
+        new_img = None
+        new_target = []
+        while new_target == []:
+            new_img, new_target = random_crop_with_keypoints(img, target, scale_range=(0.3, 0.5))
+        new_img.save(f"new_data/{15 * j + i}.png")
+        new_targets.append({
+            "id": 15 * j + i,
+            "target": target.tolist()
+        })
+    j += 1
+    print(f"{j}/{len(dataset)}")
+    
+print(new_targets)
+with open('new_annotations.json', 'w') as f:
+    json.dump({"data": new_targets}, f)

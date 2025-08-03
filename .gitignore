@@ -4,3 +4,6 @@ CARPK-1/
 COWC-1
 
 .env.local
+
+new_data/
+new_annotations.json

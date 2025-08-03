@@ -3,7 +3,6 @@ import random
 import torchvision.datasets as dset
 from torchvision.transforms import v2
 from torchvision.transforms import PILToTensor, ToPILImage
-from PIL import Image
 import torch
 import pathlib
 
