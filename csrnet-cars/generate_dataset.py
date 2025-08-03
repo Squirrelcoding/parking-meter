@@ -31,6 +31,7 @@ def random_crop_with_keypoints(img: Image.Image, keypoints: torch.Tensor, scale_
     scale_h = random.uniform(*scale_range)
     crop_w = int(w * scale_w)
     crop_h = int(h * scale_h)
+    # print(f"CROPPING: {scale_h}, {scale_w}")
 
     # Ensure crop fits inside image
     if crop_w >= w or crop_h >= h:
@@ -111,25 +112,24 @@ annotation_file = dataset_path / "annotations.json"
 
 dataset = RawCarDataset(dataset_path, annotation_file, transform=transforms)
 
-new_targets = []
+data = []
 
 j = 0
-
+offspring_size = 20
 
 for img, target in dataset:
-    for i in range(20):
+    for i in range(offspring_size):
         new_img = None
         new_target = []
         while new_target == []:
-            new_img, new_target = random_crop_with_keypoints(img, target, scale_range=(0.3, 0.5))
-        new_img.save(f"new_data/{15 * j + i}.png")
-        new_targets.append({
-            "id": 15 * j + i,
-            "target": target.tolist()
+            new_img, new_target = random_crop_with_keypoints(img, target, scale_range=(0.1, 0.5))
+        new_img.save(f"new_data/{offspring_size* j + i}.png")
+        data.append({
+            "id": offspring_size* j + i,
+            "target": new_target.tolist()
         })
     j += 1
     print(f"{j}/{len(dataset)}")
     
-print(new_targets)
 with open('new_annotations.json', 'w') as f:
-    json.dump({"data": new_targets}, f)
+    json.dump({"data": data}, f)
