@@ -11,6 +11,8 @@ import json
 import car_dataset
 import time
 
+NUM_CARS = 1530
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 parser = argparse.ArgumentParser(description="PyTorch CSRNet")
@@ -31,14 +33,13 @@ parser.add_argument("gpu", metavar="GPU", type=str, help="GPU id to use.")
 
 parser.add_argument("task", metavar="TASK", type=str, help="task id to use.")
 
-
 def train(train_list, model, criterion, optimizer, epoch):
     print("start train")
     losses = AverageMeter()
     batch_time = AverageMeter()
     data_time = AverageMeter()
 
-    train_data = car_dataset.ListDataset(
+    train_data = car_dataset.CarDataset(
         train_list,
         shuffle=True,
         transform=transforms.Compose(
@@ -186,10 +187,15 @@ args.scales = [1, 1, 1, 1]
 args.workers = 4
 args.seed = time.time()
 args.print_freq = 30
-with open(args.train_json, "r") as outfile:
-    train_list = json.load(outfile)
-with open(args.test_json, "r") as outfile:
-    val_list = json.load(outfile)
+
+# Make the train, and val lists.
+# refer to generation/generation_dataset.py for the ranges
+train_list = [f"car_data/{i}.png" for i in range(int(NUM_CARS * 0.8))]
+val_list = [f"car_data/{i}.png" for i in range(int(NUM_CARS * 0.8) + int(NUM_CARS * 0.1), NUM_CARS)]
+
+print(train_list)
+print()
+print(val_list)
 
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 torch.cuda.manual_seed(args.seed)

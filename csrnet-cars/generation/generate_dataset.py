@@ -6,7 +6,7 @@ from PIL import Image
 
 import torch
 from torchvision.transforms import v2, functional as F
-from torchvision.transforms.v2 import ToImage, ToDtype
+from torchvision.transforms.v2 import ToImage, ToDtype, Resize
 
 from torch.utils.data import Dataset
 
@@ -53,7 +53,7 @@ def random_crop_with_keypoints(img: Image.Image, keypoints: torch.Tensor, scale_
     # Keep keypoints inside crop
     inside_crop_mask = (
         (kp_x >= crop_x) & (kp_x < crop_x + crop_w) &
-        (kp_y >= crop_y) & (kp_y < crop_y + crop_h)
+        (kp_y >= crop_y) & (kp_y < crop_h + crop_y)
     )
 
     filtered_kps = keypoints[inside_crop_mask]
@@ -115,6 +115,10 @@ data = []
 
 j = 0
 offspring_size = 30
+target_size = 512 # Set the desired output size
+
+# Create a Resize transform
+resize_transform = Resize(size=(target_size, target_size), antialias=True)
 
 for img, target in dataset:
     for i in range(offspring_size):
@@ -122,9 +126,23 @@ for img, target in dataset:
         new_target = []
         while new_target == []:
             new_img, new_target = random_crop_with_keypoints(img, target, scale_range=(0.1, 0.5))
-        new_img.save(f"car_data/{offspring_size* j + i}.png")
+
+        # Get the original size of the cropped image
+        w, h = new_img.size
+
+        # Resize the cropped image to the target size
+        new_img = resize_transform(new_img)
+
+        # Scale the keypoints to match the new image size
+        if len(new_target) > 0:
+            scale_x = target_size / w
+            scale_y = target_size / h
+            new_target[:, 0] *= scale_x
+            new_target[:, 1] *= scale_y
+
+        new_img.save(f"car_data/{offspring_size * j + i}.png")
         data.append({
-            "id": offspring_size* j + i,
+            "id": offspring_size * j + i,
             "target": new_target.tolist()
         })
     j += 1
