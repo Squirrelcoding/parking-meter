@@ -45,7 +45,7 @@ class CarDataset(Dataset):
         return img, keypoints
 
 
-dataset_path = "new_data"
+dataset_path = "car_data"
 annotation_file = "new_annotations.json"
 
 

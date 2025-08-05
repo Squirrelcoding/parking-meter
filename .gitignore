@@ -5,7 +5,8 @@ COWC-1
 
 .env.local
 
-new_data/
+car_data/
+h5_data/
 new_annotations.json
 
 car_test_data.json

@@ -122,7 +122,7 @@ for img, target in dataset:
         new_target = []
         while new_target == []:
             new_img, new_target = random_crop_with_keypoints(img, target, scale_range=(0.1, 0.5))
-        new_img.save(f"new_data/{offspring_size* j + i}.png")
+        new_img.save(f"car_data/{offspring_size* j + i}.png")
         data.append({
             "id": offspring_size* j + i,
             "target": new_target.tolist()
@@ -142,3 +142,6 @@ with open('car_test_data.json', 'w') as f:
 
 with open('car_val_data.json', 'w') as f:
     json.dump({"data": val_data}, f)
+
+with open('everything.json', 'w') as f:
+    json.dump({"data": data}, f)

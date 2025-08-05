@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm as CM
 
 # Open the .h5 file
-with h5py.File('IMG_167.h5', 'r') as f:
+with h5py.File('h5_data/0.h5', 'r') as f:
     # Access the 'density' group
     
     # Assuming the dataset inside density is called 'data'
