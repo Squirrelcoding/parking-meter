@@ -7,3 +7,7 @@ COWC-1
 
 new_data/
 new_annotations.json
+
+car_test_data.json
+car_train_data.json
+car_val_data.json
