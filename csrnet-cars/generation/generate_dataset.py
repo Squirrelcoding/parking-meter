@@ -107,20 +107,20 @@ target_transform = v2.Compose([
 ])
 
 dataset_path = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/dataset"
-annotation_file = dataset_path / "annotations.json"
+annotation_file = dataset_path / "annotations2.json"
 
 dataset = RawCarDataset(dataset_path, annotation_file, transform=transforms)
 
 data = []
 
 j = 0
-offspring_size = 30
-target_size = 512 # Set the desired output size
+offspring_size = 5
+target_size = 128 # Set the desired output size
 
 # Create a Resize transform
 resize_transform = Resize(size=(target_size, target_size), antialias=True)
 
-for img, target in dataset:
+for idx, (img, target) in enumerate(dataset):
     for i in range(offspring_size):
         new_img = None
         new_target = []
@@ -143,7 +143,8 @@ for img, target in dataset:
         new_img.save(f"car_data/{offspring_size * j + i}.png")
         data.append({
             "id": offspring_size * j + i,
-            "target": new_target.tolist()
+            "target": new_target.tolist(),
+            "original_file": os.path.basename(dataset.paths[idx]).split('/')[-1].split(".")[0]
         })
     j += 1
     print(f"{j}/{len(dataset)}")

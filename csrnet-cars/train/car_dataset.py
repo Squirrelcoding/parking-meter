@@ -13,7 +13,7 @@ def load_data(img_path, train=False):
     """
     Loads ground truth data.
     """
-    gt_path = img_path.replace('.png', '.h5').replace('car_data', 'h5_data')
+    gt_path = img_path.replace('.png', '.h5').replace('car', 'h5')
     img = Image.open(img_path).convert('RGB')
     gt_file = h5py.File(gt_path)
     target = np.asarray(gt_file['density'])

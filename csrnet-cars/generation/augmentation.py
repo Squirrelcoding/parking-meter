@@ -10,7 +10,7 @@ import pathlib
 
 
 dataset_path = pathlib.Path.home() / "Library/Mobile Documents/com~apple~CloudDocs/dataset"
-annotation_file = dataset_path / "annotations.json"
+annotation_file = dataset_path / "annotations2.json"
 
 
 def gauss_noise_tensor(img):

@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy.ndimage.filters import gaussian_filter
 
-KERNEL_SIZE = 15
+KERNEL_SIZE = 3
 
 NUM_CARS = 1530
 
