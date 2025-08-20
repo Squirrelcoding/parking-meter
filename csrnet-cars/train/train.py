@@ -190,8 +190,8 @@ args.print_freq = 30
 
 # Make the train, and val lists.
 # refer to generation/generation_dataset.py for the ranges
-train_list = [f"car_data/{i}.png" for i in range(int(NUM_CARS * 0.8))]
-val_list = [f"car_data/{i}.png" for i in range(int(NUM_CARS * 0.8) + int(NUM_CARS * 0.1), NUM_CARS)]
+train_list = [f"data/car/car_data/{i}.png" for i in range(int(NUM_CARS * 0.8))]
+val_list = [f"data/car/car_data/{i}.png" for i in range(int(NUM_CARS * 0.8) + int(NUM_CARS * 0.1), NUM_CARS)]
 
 print(train_list)
 print()
@@ -223,8 +223,6 @@ if args.pre:
         )
     else:
         print("=> no checkpoint found at '{}'".format(args.pre))
-
-
 
 for epoch in range(args.start_epoch, args.epochs):
     print(f"{epoch} / {args.epochs}")
