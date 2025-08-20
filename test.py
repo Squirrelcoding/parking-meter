@@ -14,7 +14,7 @@ if len(sys.argv) != 2:
 file_number = sys.argv[1]  # This will be "X" from `python main.py X`
 
 # Open the .h5 file
-with h5py.File(f'car_heatmaps/{file_number}.h5', 'r') as f:
+with h5py.File(f'data/car/car_heatmaps/{file_number}.h5', 'r') as f:
     matrix = f['density'][:]  # load entire dataset into memory
 
 # print(file_number)
