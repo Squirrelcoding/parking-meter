@@ -204,7 +204,15 @@ model = CSRNet()
 
 model = model.to(device)
 
-criterion = nn.MSELoss(size_average=False).to(device)
+class RMSLELoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.mse = nn.MSELoss()
+        
+    def forward(self, pred, actual):
+        return torch.sqrt(self.mse(torch.log(pred + 1), torch.log(actual + 1)))
+
+criterion = RMSLELoss().to(device)
 
 optimizer = torch.optim.SGD(
     model.parameters(), args.lr, momentum=args.momentum, weight_decay=args.decay

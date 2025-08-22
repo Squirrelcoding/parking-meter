@@ -265,7 +265,7 @@ class CarDatasetWithH5(Dataset):
         return img, heatmap
 
 # Configuration
-dataset_path = "/Users/propoop/Downloads/dataset"
+dataset_path = "/content/drive/MyDrive/data/dataset"
 h5_source_path = "data/h5_source_data"  # Update this path
 annotation_file = dataset_path + "/annotations2.json"
 output_dir = "car/car_data"
