@@ -7,6 +7,7 @@ from scipy.ndimage import gaussian_filter
 KERNEL_SIZE = 20
 
 root = "/Users/propoop/Downloads/dataset"
+# dataset_path = "/content/drive/MyDrive/data/dataset"
 big_annotation = root + "/annotations2.json"
 
 img_paths = []
